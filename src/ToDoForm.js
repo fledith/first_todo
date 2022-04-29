@@ -1,34 +1,36 @@
-import { useState } from "react";
+import { useCallback, useState } from 'react';
 
-function ToDoForm({addTask}) {
-    const [ userInput, setUserInput ] = useState('');
+function ToDoForm({ addTask }) {
+    const [userInput, setUserInput] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = useCallback((e) => {
         e.preventDefault();
         addTask(userInput);
         setUserInput('');
-    }
+    },[addTask, userInput]);
 
-    const handleChange = (e) => {
+    const handleChange = useCallback ((e) => {
         setUserInput(e.currentTarget.value)
-    }
-    
-    const handleKeyPress = (e) => {
+    }, []);
+
+    const handleKeyPress = useCallback ((e) => {
       if (e.key === 'Enter') {
           handleSubmit(e);
       }
-    }
+    }, [handleSubmit]);
+
     return (
-        <form onSubmit = {handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <input
-                value = {userInput}
-                type = "text"
-                onChange = {handleChange}
-                onKeyDown = {handleKeyPress}
-                placeholder = 'Write the task...'/>
+                value={userInput}
+                type="text"
+                onChange={handleChange}
+                onKeyDown={handleKeyPress}
+                placeholder='Write the task...'
+            />
             <button>Save</button>
         </form>
     )
 }
 
-export default ToDoForm
+export default ToDoForm;
